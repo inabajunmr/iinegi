@@ -1,0 +1,8 @@
+work/inabajun/iinegi/ExampleResource.java
+ work.inabajun.iinegi.ExampleResource
+work/inabajun/iinegi/domain/NegiUploader.java
+ work.inabajun.iinegi.domain.NegiUploader
+work/inabajun/iinegi/web/NegiForm.java
+ work.inabajun.iinegi.web.NegiForm
+work/inabajun/iinegi/web/NegiResource.java
+ work.inabajun.iinegi.web.NegiResource

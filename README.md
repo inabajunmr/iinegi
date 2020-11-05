@@ -1,50 +1,19 @@
-# iinegi project
-
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
-
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-```shell script
-./gradlew quarkusDev
+# iinegi
+## Testing
+Prepare docker image for local test.
 ```
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./gradlew build
+docker pull amazon/dynamodb-local
+docker run -d --name dynamodb -p 8000:8000 amazon/dynamodb-local
+aws --endpoint-url http://127.0.0.1:8000/ dynamodb create-table \
+    --table-name Negi \
+    --attribute-definitions \
+        AttributeName=Id,AttributeType=S \
+        AttributeName=CreateTimestampWithId,AttributeType=S \
+        AttributeName=CreateDate,AttributeType=S \
+    --key-schema AttributeName=Id,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --global-secondary-indexes \
+        IndexName=CreateTimestamp,KeySchema=["{AttributeName=CreateDate,KeyType=HASH}","{AttributeName=CreateTimestampWithId,KeyType=RANGE}"],Projection={ProjectionType=ALL},ProvisionedThroughput="{ReadCapacityUnits=1,WriteCapacityUnits=1}"
+docker run -p 9090:9090 -p 9191:9191 -t adobe/s3mock
+aws --endpoint-url http://localhost:9090/ s3 mb s3://negi
 ```
-It produces the `iinegi-1.0-SNAPSHOT-runner.jar` file in the `/build` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/lib` directory.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./gradlew build -Dquarkus.package.type=uber-jar
-```
-
-The application is now runnable using `java -jar build/iinegi-1.0-SNAPSHOT-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./build/iinegi-1.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
-
-# RESTEasy JAX-RS
-
-Guide: https://quarkus.io/guides/rest-json
-
-

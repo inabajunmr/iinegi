@@ -1,9 +1,10 @@
 package work.inabajun.iinegi.web;
 
-import io.smallrye.mutiny.Uni;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import work.inabajun.iinegi.domain.NotImageException;
+import work.inabajun.iinegi.domain.NegiService;
 
-import javax.ejb.PostActivate;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,16 +14,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 @Path("/negi")
 public class NegiResource {
 
     private static final Logger LOG = Logger.getLogger(NegiResource.class.getName());
+
+    @Inject
+    NegiService service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,16 +39,13 @@ public class NegiResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response postNegi(@MultipartForm NegiForm form) throws IOException {
-        LOG.info(form.description);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        form.image.transferTo(baos);
-
-        Response.ResponseBuilder response = Response.ok((StreamingOutput) output -> baos.writeTo(output));
-        response.header("Content-Disposition", "attachment;filename=fuck.png");
-        response.header("Content-Type", "image/png");
-        return response.build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postNegi(@MultipartForm NegiForm form) {
+        try {
+            return Response.ok(service.create(form.image, form.description)).build();
+        } catch (NotImageException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @POST

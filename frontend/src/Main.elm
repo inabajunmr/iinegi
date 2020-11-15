@@ -1,17 +1,20 @@
-module Main exposing (Model, Msg(..), init, main, update)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Http
+import Json.Decode as D exposing (..)
 
 
 main : Program () Model Msg
 main =
-    Browser.sandbox
+    Browser.element
         { init = init
-        , update = update
         , view = view
+        , update = update
+        , subscriptions = \_ -> Sub.none
         }
 
 
@@ -20,12 +23,26 @@ main =
 
 
 type alias Model =
-    { input : String, memos : List String }
+    { input : String
+    , negiState : NegiState
+    }
 
 
-init : Model
-init =
-    { input = "", memos = [] }
+type NegiState
+    = Init
+    | Waiting
+    | Loaded (List Negi)
+    | Failed Http.Error
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Model "" Init
+    , Http.get
+        { url = "http://0.0.0.0:8080/negi?after=1605367129000" -- 15 Nov 2020 17:19:15
+        , expect = Http.expectJson Receive negisDecoder
+        }
+    )
 
 
 
@@ -33,21 +50,17 @@ init =
 
 
 type Msg
-    = Input String
-    | Submit
+    = Receive (Result Http.Error (List Negi))
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Input input ->
-            { model | input = input }
+        Receive (Ok user) ->
+            ( { model | negiState = Loaded user }, Cmd.none )
 
-        Submit ->
-            { model
-                | input = ""
-                , memos = model.input :: model.memos
-            }
+        Receive (Err e) ->
+            ( { model | negiState = Failed e }, Cmd.none )
 
 
 
@@ -57,16 +70,40 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ Html.form [ onSubmit Submit ]
-            [ input [ value model.input, onInput Input ] []
-            , button
-                [ disabled (String.length model.input < 1) ]
-                [ text "Submit" ]
-            ]
-        , ul [] (List.map viewMemo model.memos)
+        [ case model.negiState of
+            Init ->
+                text ""
+
+            Waiting ->
+                text "Waiting..."
+
+            Loaded negis ->
+                ul []
+                    (List.map
+                        (\n -> li [] [ text n.description ])
+                        negis
+                    )
+
+            Failed e ->
+                div [] [ text (Debug.toString e) ]
         ]
 
 
-viewMemo : String -> Html Msg
-viewMemo memo =
-    li [] [ text memo ]
+
+-- DATA
+
+
+type alias Negi =
+    { description : String
+    }
+
+
+negisDecoder : Decoder (List Negi)
+negisDecoder =
+    D.list negiDecoder
+
+
+negiDecoder : Decoder Negi
+negiDecoder =
+    D.map Negi
+        (D.field "description" D.string)

@@ -1,6 +1,7 @@
 package work.inabajun.iinegi.web;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import work.inabajun.iinegi.domain.NegiNotFoundException;
 import work.inabajun.iinegi.domain.NotImageException;
 import work.inabajun.iinegi.domain.NegiService;
 
@@ -61,9 +62,15 @@ public class NegiResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/iinegi/{negiId}")
-    public String iinegi(@PathParam("negiId") String negiId) {
-        return "hello";
+    @Path("/{negiId}/iinegi")
+    public Response iinegi(@PathParam("negiId") String negiId) {
+        try{
+            service.iinegi(negiId);
+            return Response.ok()
+                    .header("Access-Control-Allow-Origin", "*") // TODO for test
+                    .build();
+        }catch (NegiNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
-
 }

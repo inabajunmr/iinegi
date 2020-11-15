@@ -24,9 +24,14 @@ public class Negi {
         return createTimestamp;
     }
 
+    public long getIinegi() {
+        return iinegi;
+    }
+
     private String id;
     private String description;
     private String imagePath;
+    private long iinegi;
     private LocalDateTime createTimestamp;
 
     public Negi() {
@@ -40,17 +45,19 @@ public class Negi {
         this.createTimestamp = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
     }
 
-    public Negi(String id, String description, String imagePath, LocalDateTime createTimestamp) {
+    public Negi(String id, String description, String imagePath, long iinegi, LocalDateTime createTimestamp) {
         this.id = id;
         this.description = description;
         this.imagePath = imagePath;
+        this.iinegi = iinegi;
         this.createTimestamp = createTimestamp;
     }
 
-    public Negi(String id, String description, String imagePath, String createTimestamp) {
+    public Negi(String id, String description, String imagePath,long iinegi,String createTimestamp) {
         this.id = id;
         this.description = description;
         this.imagePath = imagePath;
+        this.iinegi = iinegi;
         this.createTimestamp = LocalDateTime.parse(createTimestamp);
     }
 

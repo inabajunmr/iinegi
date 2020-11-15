@@ -32,6 +32,16 @@ public class NegiService {
     }
 
     /**
+     * Iinegi.
+     *
+     * @param negiId id
+     * @throws NegiNotFoundException negi not found.
+     */
+    public void iinegi(String negiId) {
+        negiRepository.iinegi(negiId);
+    }
+
+    /**
      * Find negi.
      * @param id id
      * @return Negi

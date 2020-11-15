@@ -92,6 +92,7 @@ public class NegiRepository {
      * @return Negi list
      */
     public List<Negi> listAfter(LocalDateTime localDateTime) {
+        LOG.info(localDateTime.toString());
         final QueryRequest request = QueryRequest.builder()
                 .tableName(NegiSchema.TABLE_NAME)
                 .indexName("CreateTimestamp")

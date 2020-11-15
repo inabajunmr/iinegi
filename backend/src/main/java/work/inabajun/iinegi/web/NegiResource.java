@@ -27,10 +27,13 @@ public class NegiResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listNegi(@QueryParam("after") Long after) {
+        LOG.info("Call listNegi. after=" + after);
         if(after == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
-            return Response.ok(service.listAfter(after)).build();
+            return Response.ok(service.listAfter(after))
+                    .header("Access-Control-Allow-Origin", "*") // TODO for test
+                    .build();
         }
     }
 
@@ -38,7 +41,9 @@ public class NegiResource {
     @Path("{negiId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNegi(@PathParam("negiId") String negiId) {
-        return service.find(negiId).map(n -> Response.ok(n).build()).orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
+        return service.find(negiId).map(n -> Response.ok(n).build()).orElseGet(() -> Response.status(Response.Status.NOT_FOUND)
+                .header("Access-Control-Allow-Origin", "*") // TODO for test
+                .build());
     }
 
     @POST
@@ -46,7 +51,9 @@ public class NegiResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response postNegi(@MultipartForm NegiForm form) {
         try {
-            return Response.ok(service.create(form.image, form.description)).build();
+            return Response.ok(service.create(form.image, form.description))
+                    .header("Access-Control-Allow-Origin", "*") // TODO for test
+                    .build();
         } catch (NotImageException e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

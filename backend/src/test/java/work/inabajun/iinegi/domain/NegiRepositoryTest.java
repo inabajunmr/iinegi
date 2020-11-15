@@ -64,21 +64,21 @@ class NegiRepositoryTest {
 
         // setup
         final LocalDateTime now = LocalDateTime.now();
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(1)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(2)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(3)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(4)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(5)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(6)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(7)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(8)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(9)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(10)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(11)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(12)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(13)));
-        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", now.plusSeconds(14)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(1)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(2)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(3)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(4)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(5)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(6)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(7)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(8)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(9)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(10)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(11)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(12)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(13)));
+        sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(14)));
 
         // exercise
         final List<Negi> list = sut.listAfter(now.plusSeconds(2));
@@ -95,6 +95,36 @@ class NegiRepositoryTest {
         assertEquals(list.get(7).getCreateTimestamp(), now.plusSeconds(9));
         assertEquals(list.get(8).getCreateTimestamp(), now.plusSeconds(10));
         assertEquals(list.get(9).getCreateTimestamp(), now.plusSeconds(11));
+    }
+
+    @Test
+    public void testIinegi() {
+
+        // setup
+        final Negi negi = new Negi("desc", "testpath");
+        sut.create(negi);
+
+        // exercise
+        sut.iinegi(negi.getId());
+
+        // verify
+        final Negi actual1 = sut.find(negi.getId()).get();
+        assertEquals(actual1.getIinegi(), 1L);
+
+        // exercise
+        sut.iinegi(negi.getId());
+
+        // verify
+        final Negi actual2 = sut.find(negi.getId()).get();
+        assertEquals(actual2.getIinegi(), 2L);
+
+    }
+
+    @Test
+    public void testIinegi_NotFound() {
+
+        // exercise & verify
+        assertThrows(NegiNotFoundException.class, () -> sut.iinegi(UUID.randomUUID().toString()));
     }
 
     @Test
@@ -118,5 +148,6 @@ class NegiRepositoryTest {
         InputStream input = new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8));
         assertThrows(NotImageException.class, () -> sut.uploadImage(input));
     }
+
 
 }

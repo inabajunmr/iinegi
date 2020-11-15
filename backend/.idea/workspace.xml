@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="992e7b82-9901-4dca-9645-9701a1e8aef6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/Negi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/Negi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiSchema.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/domain/NegiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/web/NegiResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/work/inabajun/iinegi/web/NegiResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/work/inabajun/iinegi/domain/NegiRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/work/inabajun/iinegi/domain/NegiRepositoryTest.java" afterDir="false" />
     </list>
@@ -83,7 +86,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.unlinked.gradle.project.popup" value="true" />
   </component>
-  <component name="RunManager" selected="Gradle.backend [quarkusDev]">
+  <component name="RunManager" selected="Gradle.NegiRepositoryTest">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -101,6 +104,25 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" value="--tests &quot;work.inabajun.iinegi.domain.NegiRepositoryTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="NegiRepositoryTest.testIinegi" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;work.inabajun.iinegi.domain.NegiRepositoryTest.testIinegi&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -154,9 +176,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.NegiRepositoryTest" />
+        <item itemvalue="Gradle.NegiRepositoryTest.testIinegi" />
         <item itemvalue="Gradle.backend [quarkusDev]" />
         <item itemvalue="Gradle.NegiRepositoryTest.testList" />
-        <item itemvalue="Gradle.NegiRepositoryTest" />
       </list>
     </recent_temporary>
   </component>
@@ -168,7 +191,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1605411731848</updated>
-      <workItem from="1605411733009" duration="2799000" />
+      <workItem from="1605411733009" duration="5143000" />
     </task>
     <servers />
   </component>
@@ -176,25 +199,49 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1605453483193">
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1605455838936">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605453483193" />
-    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1605453483190">
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605455838936" />
+    <state width="1878" height="376" key="GridCell.Tab.0.bottom/0.0.1920.983/-1920.93.1920.1057@0.0.1920.983" timestamp="1605454798578" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1605455838934">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605453483190" />
-    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1605453483187">
+    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605455838934" />
+    <state width="1878" height="376" key="GridCell.Tab.0.center/0.0.1920.983/-1920.93.1920.1057@0.0.1920.983" timestamp="1605454798561" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1605455838934">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605453483187" />
-    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1605453483191">
+    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605455838934" />
+    <state width="1878" height="376" key="GridCell.Tab.0.left/0.0.1920.983/-1920.93.1920.1057@0.0.1920.983" timestamp="1605454798560" />
+    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1605455838935">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605453483191" />
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1605438733758">
+    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605455838935" />
+    <state width="1878" height="376" key="GridCell.Tab.0.right/0.0.1920.983/-1920.93.1920.1057@0.0.1920.983" timestamp="1605454798562" />
+    <state width="1878" height="376" key="GridCell.Tab.1.bottom" timestamp="1605454891762">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605438733758" />
+    <state width="1878" height="376" key="GridCell.Tab.1.bottom/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605454891762" />
+    <state width="1878" height="376" key="GridCell.Tab.1.center" timestamp="1605454891761">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="376" key="GridCell.Tab.1.center/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605454891761" />
+    <state width="1878" height="376" key="GridCell.Tab.1.left" timestamp="1605454891761">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="376" key="GridCell.Tab.1.left/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605454891761" />
+    <state width="1878" height="376" key="GridCell.Tab.1.right" timestamp="1605454891762">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="376" key="GridCell.Tab.1.right/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605454891762" />
+    <state x="100" y="100" width="1720" height="880" key="dock-window-1" timestamp="1605454415631">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="100" y="100" width="1720" height="880" key="dock-window-1/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605454415631" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1605455289442">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/-1920.70.1920.1080@0.0.1920.1080" timestamp="1605455289442" />
   </component>
 </project>

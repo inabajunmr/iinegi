@@ -5,11 +5,13 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.ConditionalCheckFailedException;
+import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.ExpectedAttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
+import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -56,6 +58,7 @@ public class NegiRepository {
                             Map.of(NegiSchema.ID, s(negi.getId()),
                                     NegiSchema.DESCRIPTION, s(negi.getDescription()),
                                     NegiSchema.IMAGE_PATH, s(negi.getImagePath()),
+                                    NegiSchema.IINEGI_COUNT, n(negi.getIinegi()),
                                     NegiSchema.CREATE_DATE, s(createDate),
                                     NegiSchema.CREATE_TIMESTAMP_WITH_ID, s(negi.getCreateTimestampWithId()),
                                     NegiSchema.CREATE_TIMESTAMP, s(negi.getCreateTimestamp().toString())))
@@ -67,6 +70,22 @@ public class NegiRepository {
             throw new AssertionError("Failed to access to AWS resource.", e);
         } catch (ConditionalCheckFailedException e) {
             throw new NegiAlreadyExistException(e.getMessage(), e);
+        }
+    }
+
+    public void iinegi(String id) {
+        final UpdateItemRequest request = UpdateItemRequest.builder().tableName(NegiSchema.TABLE_NAME)
+                .key(Map.of(NegiSchema.ID, AttributeValue.builder().s(id).build()))
+                .updateExpression("SET #na = #na + :val")
+                .expressionAttributeNames(Map.of("#na", NegiSchema.IINEGI_COUNT))
+                .expressionAttributeValues(Map.of(":val", AttributeValue.builder().n("1").build()))
+                .build();
+        try {
+            dynamoDB.updateItem(request);
+        } catch (SdkClientException e) {
+            throw new AssertionError("Failed to access to AWS resource.", e);
+        } catch (DynamoDbException e) {
+            throw new NegiNotFoundException(e.getMessage(), e);
         }
     }
 
@@ -108,8 +127,9 @@ public class NegiRepository {
         final String id = item.get(NegiSchema.ID).s();
         final String description = item.get(NegiSchema.DESCRIPTION).s();
         final String imagePath = item.get(NegiSchema.IMAGE_PATH).s();
+        final long iinegi = Long.valueOf(item.get(NegiSchema.IINEGI_COUNT).n());
         final String createTimestamp = item.get(NegiSchema.CREATE_TIMESTAMP).s();
-        return new Negi(id,description,imagePath,createTimestamp);
+        return new Negi(id,description,imagePath,iinegi, createTimestamp);
     }
 
     /**

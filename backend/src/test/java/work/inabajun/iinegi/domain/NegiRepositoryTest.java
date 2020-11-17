@@ -81,20 +81,20 @@ class NegiRepositoryTest {
         sut.create(new Negi(UUID.randomUUID().toString(), "desc", "path", 0L, now.plusSeconds(14)));
 
         // exercise
-        final List<Negi> list = sut.listAfter(now.plusSeconds(2));
+        final List<Negi> list = sut.listBefore(now.plusSeconds(12));
 
         // verify
         assertEquals(list.size(), 10);
-        assertEquals(list.get(0).getCreateTimestamp(), now.plusSeconds(2));
-        assertEquals(list.get(1).getCreateTimestamp(), now.plusSeconds(3));
-        assertEquals(list.get(2).getCreateTimestamp(), now.plusSeconds(4));
-        assertEquals(list.get(3).getCreateTimestamp(), now.plusSeconds(5));
-        assertEquals(list.get(4).getCreateTimestamp(), now.plusSeconds(6));
-        assertEquals(list.get(5).getCreateTimestamp(), now.plusSeconds(7));
-        assertEquals(list.get(6).getCreateTimestamp(), now.plusSeconds(8));
-        assertEquals(list.get(7).getCreateTimestamp(), now.plusSeconds(9));
-        assertEquals(list.get(8).getCreateTimestamp(), now.plusSeconds(10));
-        assertEquals(list.get(9).getCreateTimestamp(), now.plusSeconds(11));
+        assertEquals(list.get(0).getCreateTimestamp(), now.plusSeconds(11));
+        assertEquals(list.get(1).getCreateTimestamp(), now.plusSeconds(10));
+        assertEquals(list.get(2).getCreateTimestamp(), now.plusSeconds(9));
+        assertEquals(list.get(3).getCreateTimestamp(), now.plusSeconds(8));
+        assertEquals(list.get(4).getCreateTimestamp(), now.plusSeconds(7));
+        assertEquals(list.get(5).getCreateTimestamp(), now.plusSeconds(6));
+        assertEquals(list.get(6).getCreateTimestamp(), now.plusSeconds(5));
+        assertEquals(list.get(7).getCreateTimestamp(), now.plusSeconds(4));
+        assertEquals(list.get(8).getCreateTimestamp(), now.plusSeconds(3));
+        assertEquals(list.get(9).getCreateTimestamp(), now.plusSeconds(2));
     }
 
     @Test

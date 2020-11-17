@@ -27,12 +27,12 @@ public class NegiResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listNegi(@QueryParam("after") Long after) {
-        LOG.info("Call listNegi. after=" + after);
+    public Response listNegi(@QueryParam("before") Long after) {
+        LOG.info("Call listNegi. before=" + after);
         if(after == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
-            return Response.ok(service.listAfter(after))
+            return Response.ok(service.listBefore(after))
                     .header("Access-Control-Allow-Origin", "*") // TODO for test
                     .build();
         }

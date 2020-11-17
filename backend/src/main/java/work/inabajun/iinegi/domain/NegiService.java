@@ -55,7 +55,7 @@ public class NegiService {
      * @param timestamp epoch milli
      * @return Negi list
      */
-    public List<Negi> listAfter(Long timestamp) {
-        return negiRepository.listAfter(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("Asia/Tokyo")));
+    public List<Negi> listBefore(Long timestamp) {
+        return negiRepository.listBefore(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("Asia/Tokyo")));
     }
 }

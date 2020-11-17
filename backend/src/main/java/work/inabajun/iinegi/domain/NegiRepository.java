@@ -110,13 +110,13 @@ public class NegiRepository {
      * @param localDateTime datetime
      * @return Negi list
      */
-    public List<Negi> listAfter(LocalDateTime localDateTime) {
+    public List<Negi> listBefore(LocalDateTime localDateTime) {
         LOG.info(localDateTime.toString());
         final QueryRequest request = QueryRequest.builder()
                 .tableName(NegiSchema.TABLE_NAME)
                 .indexName("CreateTimestamp")
-                .scanIndexForward(true)
-                .keyConditionExpression("CreateDate = :createDate and CreateTimestampWithId > :createTimestamp")
+                .scanIndexForward(false)
+                .keyConditionExpression("CreateDate = :createDate and CreateTimestampWithId < :createTimestamp")
                 .expressionAttributeValues(Map.of(":createDate", AttributeValue.builder().s(localDateTime.toLocalDate().toString()).build(),
                         ":createTimestamp", AttributeValue.builder().s(localDateTime.toString()).build()))
                 .limit(10).build();

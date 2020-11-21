@@ -59,6 +59,7 @@ type Msg
     | Upload
     | Uploaded (Result Http.Error ())
     | Tick Time.Posix
+    | Iinegi String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,6 +91,13 @@ update msg model =
                 , expect = Http.expectJson Received negisDecoder
                 }
             )
+
+        Iinegi id ->
+            ( model, Cmd.none )
+
+
+
+-- TODO
 
 
 upload : List File.File -> Cmd Msg
@@ -131,7 +139,7 @@ view model =
             Loaded negis ->
                 ul []
                     (List.map
-                        (\n -> li [] [ text n.description, button [] [ text "いいねぎ！" ] ])
+                        (\n -> li [] [ img [ src ("http://d2yh3igoijgnoa.cloudfront.net/" ++ n.imagePath), width 500 ] [], button [ onClick (Iinegi n.id) ] [ text ("いいねぎ！" ++ String.fromInt n.iinegi) ] ])
                         negis
                     )
 
@@ -164,7 +172,9 @@ filesDecoder =
 
 
 type alias Negi =
-    { description : String
+    { id : String
+    , description : String
+    , imagePath : String
     , iinegi : Int
     }
 
@@ -176,9 +186,15 @@ negisDecoder =
 
 negiDecoder : Decoder Negi
 negiDecoder =
-    D.map2 Negi
+    D.map4 Negi
+        (D.field "id" D.string)
         (D.field "description" D.string)
+        (D.field "imagePath" D.string)
         (D.field "iinegi" D.int)
+
+
+
+-- SUBSCRIPTION
 
 
 subscriptions : Model -> Sub Msg

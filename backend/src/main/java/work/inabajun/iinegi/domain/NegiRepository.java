@@ -18,6 +18,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -148,12 +150,11 @@ public class NegiRepository {
             throw new AssertionError(e.getMessage(), e);
         }
         try {
-            final PutObjectRequest putRequest = PutObjectRequest.builder().bucket(NegiSchema.BUCKET_NAME).key(UUID.randomUUID().toString()).build();
             Files.copy(image, temp.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            if(!isImage(temp)) {
-                throw new NotImageException("This file is not image.");
-            }
-            s3.putObject(putRequest, RequestBody.fromFile(temp));
+            final File jpg = toJpeg(temp);
+            final PutObjectRequest putRequest = PutObjectRequest.builder().bucket(NegiSchema.BUCKET_NAME)
+                    .key(UUID.randomUUID().toString() + ".jpg").contentType("image/jpeg").build();
+            s3.putObject(putRequest, RequestBody.fromFile(jpg));
             return putRequest.key();
         } catch (SdkClientException e) {
             throw new AssertionError("Failed to access to AWS resource.", e);
@@ -165,9 +166,29 @@ public class NegiRepository {
         }
     }
 
-    private boolean isImage(File file) {
+    /**
+     * Encode image to Jpeg
+     * @param org image
+     * @return encoded file
+     * @throws NotImageException org is not image file
+     */
+    private File toJpeg(File org) {
         try {
-            return ImageIO.read(file) != null;
+            File jpg = File.createTempFile("negi", ".jpg");
+            final BufferedImage image = ImageIO.read(org);
+            if(image == null) {
+                throw new NotImageException("This file is not image.");
+            }
+
+            BufferedImage tmp = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D off = tmp.createGraphics();
+            off.drawImage(image, 0, 0, Color.WHITE, null);
+            final boolean encodeResult = ImageIO.write(tmp, "jpg", jpg);
+            if (!encodeResult) {
+                throw new ImageEncodeFailedException("Failed to encode to jpg.");
+            }
+
+            return jpg;
         } catch (IOException e) {
             LOG.severe("Failed to read image by ImageIO.read." + e.getMessage());
             throw new AssertionError("Failed to read image by ImageIO.read.", e);

@@ -1,7 +1,7 @@
 package work.inabajun.iinegi.domain;
 
 public class NegiSchema {
-    public static final String BUCKET_NAME = "negi";
+    public static final String BUCKET_NAME = "iinegi";
     public static final String TABLE_NAME = "Negi";
 
     public static final String ID = "Id";

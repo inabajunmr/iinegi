@@ -4762,9 +4762,9 @@ var author$project$Main$Model = F4(
 var author$project$Main$Received = function (a) {
 	return {$: 'Received', a: a};
 };
-var author$project$Main$Negi = F2(
-	function (description, iinegi) {
-		return {description: description, iinegi: iinegi};
+var author$project$Main$Negi = F3(
+	function (description, imagePath, iinegi) {
+		return {description: description, iinegi: iinegi, imagePath: imagePath};
 	});
 var elm$core$Array$branchFactor = 32;
 var elm$core$Array$Array_elm_builtin = F4(
@@ -5243,12 +5243,13 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 	});
 var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$int = _Json_decodeInt;
-var elm$json$Json$Decode$map2 = _Json_map2;
+var elm$json$Json$Decode$map3 = _Json_map3;
 var elm$json$Json$Decode$string = _Json_decodeString;
-var author$project$Main$negiDecoder = A3(
-	elm$json$Json$Decode$map2,
+var author$project$Main$negiDecoder = A4(
+	elm$json$Json$Decode$map3,
 	author$project$Main$Negi,
 	A2(elm$json$Json$Decode$field, 'description', elm$json$Json$Decode$string),
+	A2(elm$json$Json$Decode$field, 'imagePath', elm$json$Json$Decode$string),
 	A2(elm$json$Json$Decode$field, 'iinegi', elm$json$Json$Decode$int));
 var elm$json$Json$Decode$list = _Json_decodeList;
 var author$project$Main$negisDecoder = elm$json$Json$Decode$list(author$project$Main$negiDecoder);
@@ -6580,6 +6581,7 @@ var author$project$Main$filesDecoder = A2(
 		['target', 'files']),
 	elm$json$Json$Decode$list(elm$file$File$decoder));
 var elm$json$Json$Decode$map = _Json_map1;
+var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
 var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
@@ -6664,8 +6666,21 @@ var author$project$Main$form = function (model) {
 			]));
 };
 var elm$core$Debug$toString = _Debug_toString;
+var elm$html$Html$img = _VirtualDom_node('img');
 var elm$html$Html$li = _VirtualDom_node('li');
 var elm$html$Html$ul = _VirtualDom_node('ul');
+var elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var elm$html$Html$Attributes$width = function (n) {
+	return A2(
+		_VirtualDom_attribute,
+		'width',
+		elm$core$String$fromInt(n));
+};
 var author$project$Main$view = function (model) {
 	return A2(
 		elm$html$Html$div,
@@ -6693,13 +6708,21 @@ var author$project$Main$view = function (model) {
 										_List_Nil,
 										_List_fromArray(
 											[
-												elm$html$Html$text(n.description),
+												A2(
+												elm$html$Html$img,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$src('http://d2yh3igoijgnoa.cloudfront.net/' + n.imagePath),
+														elm$html$Html$Attributes$width(500)
+													]),
+												_List_Nil),
 												A2(
 												elm$html$Html$button,
 												_List_Nil,
 												_List_fromArray(
 													[
-														elm$html$Html$text('いいねぎ！')
+														elm$html$Html$text(
+														'いいねぎ！' + elm$core$String$fromInt(n.iinegi))
 													]))
 											]));
 								},

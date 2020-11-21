@@ -4762,9 +4762,9 @@ var author$project$Main$Model = F4(
 var author$project$Main$Received = function (a) {
 	return {$: 'Received', a: a};
 };
-var author$project$Main$Negi = F3(
-	function (description, imagePath, iinegi) {
-		return {description: description, iinegi: iinegi, imagePath: imagePath};
+var author$project$Main$Negi = F4(
+	function (id, description, imagePath, iinegi) {
+		return {description: description, id: id, iinegi: iinegi, imagePath: imagePath};
 	});
 var elm$core$Array$branchFactor = 32;
 var elm$core$Array$Array_elm_builtin = F4(
@@ -5243,11 +5243,12 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 	});
 var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$int = _Json_decodeInt;
-var elm$json$Json$Decode$map3 = _Json_map3;
+var elm$json$Json$Decode$map4 = _Json_map4;
 var elm$json$Json$Decode$string = _Json_decodeString;
-var author$project$Main$negiDecoder = A4(
-	elm$json$Json$Decode$map3,
+var author$project$Main$negiDecoder = A5(
+	elm$json$Json$Decode$map4,
 	author$project$Main$Negi,
+	A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$string),
 	A2(elm$json$Json$Decode$field, 'description', elm$json$Json$Decode$string),
 	A2(elm$json$Json$Decode$field, 'imagePath', elm$json$Json$Decode$string),
 	A2(elm$json$Json$Decode$field, 'iinegi', elm$json$Json$Decode$int));
@@ -6552,7 +6553,7 @@ var author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					model,
 					author$project$Main$upload(model.files));
-			default:
+			case 'Tick':
 				var time = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -6564,8 +6565,25 @@ var author$project$Main$update = F2(
 							url: 'http://0.0.0.0:8080/negi?before=' + elm$core$String$fromInt(
 								elm$time$Time$posixToMillis(time))
 						}));
+			default:
+				var id = msg.a;
+				return _Utils_Tuple2(
+					model,
+					elm$http$Http$request(
+						{
+							body: elm$http$Http$emptyBody,
+							expect: elm$http$Http$expectWhatever(author$project$Main$Uploaded),
+							headers: _List_Nil,
+							method: 'POST',
+							timeout: elm$core$Maybe$Nothing,
+							tracker: elm$core$Maybe$Nothing,
+							url: 'http://0.0.0.0:8080/negi/' + (id + '/iinegi')
+						}));
 		}
 	});
+var author$project$Main$Iinegi = function (a) {
+	return {$: 'Iinegi', a: a};
+};
 var author$project$Main$SelectImage = function (a) {
 	return {$: 'SelectImage', a: a};
 };
@@ -6718,7 +6736,11 @@ var author$project$Main$view = function (model) {
 												_List_Nil),
 												A2(
 												elm$html$Html$button,
-												_List_Nil,
+												_List_fromArray(
+													[
+														elm$html$Html$Events$onClick(
+														author$project$Main$Iinegi(n.id))
+													]),
 												_List_fromArray(
 													[
 														elm$html$Html$text(

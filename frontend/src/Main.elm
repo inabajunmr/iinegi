@@ -93,7 +93,18 @@ update msg model =
             )
 
         Iinegi id ->
-            ( model, Cmd.none )
+            ( model
+            , Http.request
+                { method = "POST"
+                , headers = []
+                , url = "http://0.0.0.0:8080/negi/" ++ id ++ "/iinegi"
+                , body =
+                    Http.emptyBody
+                , expect = Http.expectWhatever Uploaded
+                , timeout = Nothing
+                , tracker = Nothing
+                }
+            )
 
 
 
